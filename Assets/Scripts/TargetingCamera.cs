@@ -1,30 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FollowCamera : BaseCamera, ICamera
+public class TargetingCamera : BaseCamera, ICamera
 {
     public Transform transformToFollow;
-    public Vector3 offset = Vector3.zero;  // new Vector3(3.0f, 0.5f, 0f);
-    public float smooth = 5;
+    public Vector3 offset = new Vector3(-3.0f, 0.3f, 0f);
+    public float smooth = 2.0f;
 
 
-    public string CameraName { get { return "Follow Camera"; } }
+    public string CameraName { get { return "Targeting Camera"; } }
 
 
     void Awake() {
-        if (this.offset == Vector3.zero) this.offset = this.transform.position - transformToFollow.position;
     }
 
     void Start() {
         MoveCamera(true);
     }
-    
+
     void LateUpdate() {
         MoveCamera(false);
     }
 
     public void MoveCamera(bool changeCameras) {
-        Vector3 moveTo = this.transformToFollow.position + this.offset;
+        // TODO: not this
+        Vector3 moveTo = this.transformToFollow.position + this.transformToFollow.forward * this.offset.x + this.transformToFollow.up * this.offset.y + this.transformToFollow.right * this.offset.z;
+        // Vector3 moveTo = this.transformToFollow.position + this.transformToFollow.position * this.offset;
+
         float transitionSpeed = this.CheckTransitionTime(moveTo, changeCameras);
 
         if (transitionSpeed <= 0.0f) {

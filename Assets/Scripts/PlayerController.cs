@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public const string SPEED = "speed";
     public const string UNDERWATER = "underwater";
 
+    public FirstPersonCamera switchableCamera;
     public float speedTurnThreshold = 0.1f;
     public float landTurnSpeed = 2.0f;
     public float waterTurnSpeed = 0.3f;
@@ -22,6 +23,14 @@ public class PlayerController : MonoBehaviour
     void Start() {
         this.anim = this.GetComponent<Animator>();
 //        this.waterDetector = this.GetComponentInChildren<PlayerWaterDetector>();
+        SwitchCamera[] switchers = this.anim.GetBehaviours<SwitchCamera> ();
+
+        if (switchers != null) {
+
+            foreach (SwitchCamera switcher in switchers) {
+                switcher.camera = switchableCamera;
+            }
+        }
     }
 
     void FixedUpdate() {
